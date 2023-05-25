@@ -8,7 +8,7 @@ inputs:
   path:  
     description: 'Use this option to group test reports. All reports with same `path` will have common allure history. Also it used as url path to access latest report. You can specify branch name here, or project name. Default - your repo name'
     required: false
-    default: 'DEFAULT_PATH'
+    default: ${{ github.event.repository.name }}
   username:  
     description: 'If your allure-server has basic auth enabled, specify username here'
     required: false
@@ -22,7 +22,7 @@ inputs:
   buildUrl:
     required: false
     description: 'The build url to be linked in the Reports Admin UI in the allure-server for the generated report'
-    default: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job_id }}
+    default: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}
 outputs:
   report-url:
     description: 'URL of generated Allure report.'
