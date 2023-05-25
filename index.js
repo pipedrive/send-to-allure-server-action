@@ -60,7 +60,7 @@ async function runAction() {
     body: form,
   })
 
-  core.info(`Upload done: ${resultsResp.body}`)
+  core.info(`Upload done: ${JSON.stringify(resultsResp.body)}`)
 
   const results_id = resultsResp.body.uuid;
   const allureReportPath = core.getInput('path', { required: true });
@@ -79,7 +79,7 @@ async function runAction() {
     },
   });
 
-  core.info(`Report generation done: ${reportUrl.body}`)
+  core.info(`Report generation done: ${JSON.stringify(reportUrl.body)}`)
 
   core.info(`========================================================================`)
   core.info(`REPORT URL: ${reportUrl.body.url}`)
