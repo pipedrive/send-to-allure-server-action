@@ -3,7 +3,6 @@ const path = require('path')
 const got = require('got')
 const FormData = require('form-data');
 const core = require('@actions/core');
-const github = require('@actions/github');
 
 async function compress(srcFolder, zipFilePath) {
   const archiver = require('archiver');
