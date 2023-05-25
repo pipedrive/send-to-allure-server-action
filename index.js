@@ -62,13 +62,14 @@ async function runAction() {
 
   core.info(`Upload done: ${resultsResp.body}`)
 
-  const results_id = resultsResp.body.uuid
-  core.info(`Triggering report generation for ${allureReportPath}`)
+  const results_id = resultsResp.body.uuid;
+  const allureReportPath = core.getInput('path', { required: true });
+  core.info(`Triggering report generation for ${allureReportPath}`);
   const reportUrl = await defaultGot('api/report', {
     method: 'POST',
     json: {
       reportSpec: {
-        path: [core.getInput('path', { required: true })],
+        path: [allureReportPath],
         executorInfo: {
           buildUrl: core.getInput('buildUrl', { required: true }),
         },
