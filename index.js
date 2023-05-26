@@ -3,7 +3,6 @@ const path = require('path')
 const got = require('got')
 const FormData = require('form-data');
 const core = require('@actions/core');
-const github = require('@actions/github');
 
 async function compress(srcFolder, zipFilePath) {
   const archiver = require('archiver');
@@ -60,28 +59,26 @@ async function runAction() {
     body: form,
   })
 
-  core.info(`Upload done: ${resultsResp.body}`)
+  core.info(`Upload done: ${JSON.stringify(resultsResp.body)}`)
 
-  const results_id = resultsResp.body.uuid
-  const inputPath = core.getInput('path', { required: true })
-  const allureReportPath = inputPath == 'DEFAULT_PATH' ? github.context.repo.repo : inputPath
-  core.info(`Triggering report generation for ${allureReportPath}`)
+  const results_id = resultsResp.body.uuid;
+  const allureReportPath = core.getInput('path', { required: true });
+  core.info(`Triggering report generation for ${allureReportPath}`);
   const reportUrl = await defaultGot('api/report', {
     method: 'POST',
     json: {
       reportSpec: {
-        path: [
-          allureReportPath
-        ]
+        path: [allureReportPath],
+        executorInfo: {
+          buildUrl: core.getInput('buildUrl', { required: true }),
+        },
       },
-      results: [
-        results_id
-      ],
-      deleteResults: true
-    }
-  })
+      results: [results_id],
+      deleteResults: true,
+    },
+  });
 
-  core.info(`Report generation done: ${reportUrl.body}`)
+  core.info(`Report generation done: ${JSON.stringify(reportUrl.body)}`)
 
   core.info(`========================================================================`)
   core.info(`REPORT URL: ${reportUrl.body.url}`)
